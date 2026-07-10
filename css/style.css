@@ -1,0 +1,1131 @@
+/* ============================================================
+   THE PRIVATE LEDGER — Irene Mariyam Prince
+   Vault Black · Champagne (craft) · Signal Emerald (data)
+   Fraunces speaks · Inter explains · IBM Plex Mono quantifies
+   ============================================================ */
+
+:root {
+  --bg: #05070A;
+  --ink: #0B0F14;
+  --glass: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --text: #EDF1F4;
+  --text-2: #93A0B4;
+  --gold: #D4B15F;
+  --gold-dim: rgba(212, 177, 95, 0.4);
+  --emerald: #2EE6A8;
+  --emerald-glow: rgba(46, 230, 168, 0.22);
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", -apple-system, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --section-max: 1120px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--gold); color: var(--bg); }
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-2);
+}
+
+a { color: inherit; text-decoration: none; }
+
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--emerald);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: -48px;
+  left: 16px;
+  z-index: 200;
+  padding: 10px 16px;
+  background: var(--ink);
+  border: 1px solid var(--emerald);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  transition: top 0.2s var(--ease-out);
+}
+.skip-link:focus-visible { top: 12px; }
+
+/* ---- Glass surface ---- */
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+.perf-lite .glass {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: var(--ink);
+}
+.perf-lite .idcard {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  animation: none;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+    var(--ink);
+}
+.perf-lite .idcard::after { display: none; }
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px clamp(20px, 4vw, 48px);
+  transition: background 0.4s ease, border-color 0.4s ease, padding 0.4s ease;
+  border-bottom: 1px solid transparent;
+}
+.nav.scrolled {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background: rgba(11, 15, 20, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom-color: var(--glass-border);
+}
+.perf-lite .nav.scrolled { backdrop-filter: none; -webkit-backdrop-filter: none; background: var(--ink); }
+
+.nav__links { display: flex; gap: clamp(16px, 3vw, 36px); }
+.nav__links a {
+  position: relative;
+  padding: 4px 0;
+  transition: color 0.2s ease;
+}
+.nav__links a::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%; height: 1px;
+  background: var(--emerald);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease-out);
+}
+.nav__links a:hover, .nav__links a:focus-visible { color: var(--emerald); }
+.nav__links a:hover::after, .nav__links a:focus-visible::after { transform: scaleX(1); }
+
+.nav__resume {
+  margin-left: auto;
+  color: var(--gold);
+  border: 1px solid var(--gold-dim);
+  border-radius: 999px;
+  padding: 8px 18px;
+  white-space: nowrap;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, color 0.25s ease, transform 0.4s var(--ease-spring);
+}
+.nav__resume:hover, .nav__resume:focus-visible {
+  border-color: var(--gold);
+  box-shadow: 0 0 20px rgba(212, 177, 95, 0.18);
+}
+
+.nav__progress {
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 1px;
+}
+.nav__progress span {
+  display: block;
+  height: 100%;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* ============================================================
+   HERO — THE CAREER INDEX
+   ============================================================ */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(32px, 5vw, 88px);
+  padding: 120px clamp(20px, 5vw, 64px) 96px;
+  overflow: hidden;
+  background:
+    radial-gradient(900px 480px at 18% 22%, rgba(46, 230, 168, 0.05), transparent 70%),
+    radial-gradient(700px 420px at 85% 75%, rgba(212, 177, 95, 0.04), transparent 70%);
+}
+
+#career-chart {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}
+
+.hero__content { position: relative; z-index: 2; max-width: 900px; pointer-events: none; }
+.hero__content a { pointer-events: auto; }
+
+.overline { color: var(--text-2); margin-bottom: 22px; }
+
+.hero__name {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 144;
+  font-weight: 560;
+  font-size: clamp(2.6rem, 8vw, 6.4rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  margin-bottom: 22px;
+}
+.hero__name .ch { display: inline; }
+
+.hero__line {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2.4vw, 1.55rem);
+  font-weight: 340;
+  color: var(--text-2);
+  margin-bottom: 40px;
+}
+.hero__line em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.hero__ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+
+/* ---- Account-holder ID card ----
+   Not part of the [data-intro] system: its opacity fades in on its own
+   so the generic `transform: none` reveal can't wipe its positioning */
+.js .idcard { opacity: 0; transition: opacity 0.6s ease 1.3s, transform 0.5s var(--ease-out), border-color 0.3s ease; }
+.js.hero-ready .idcard, .js.reveal-fallback .idcard { opacity: 1; }
+
+.idcard {
+  position: relative;
+  z-index: 2;
+  justify-self: end;
+  align-self: center;
+  width: clamp(244px, 22vw, 296px);
+  padding: 20px 20px 22px;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  /* Liquid glass: layered translucency + a slow-drifting emerald/gold refraction */
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.02) 55%),
+    radial-gradient(130% 130% at 18% 0%, rgba(46, 230, 168, 0.16), transparent 52%),
+    radial-gradient(130% 130% at 82% 100%, rgba(212, 177, 95, 0.16), transparent 52%);
+  background-size: 200% 200%, 220% 220%, 220% 220%;
+  background-position: 0% 0%, 0% 0%, 100% 100%;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow:
+    0 24px 60px -20px rgba(0, 0, 0, 0.55),
+    0 2px 10px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+    inset 0 -20px 40px -30px rgba(46, 230, 168, 0.25);
+  transform: rotate(-2.5deg);
+  animation: idcard-flow 16s ease-in-out infinite;
+  transition: transform 0.6s var(--ease-spring), box-shadow 0.5s ease, border-color 0.3s ease;
+}
+/* moving specular highlight — the "wet" sheen sweeping across the glass */
+.idcard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, transparent 32%, rgba(255, 255, 255, 0.22) 47%, rgba(255, 255, 255, 0.05) 52%, transparent 62%);
+  transform: translateX(-130%);
+  pointer-events: none;
+  z-index: 3;
+  transition: transform 1s var(--ease-out);
+}
+.idcard:hover {
+  transform: rotate(0deg) translateY(-6px);
+  border-color: rgba(212, 177, 95, 0.4);
+  box-shadow:
+    0 34px 80px -22px rgba(0, 0, 0, 0.6),
+    0 2px 10px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.38),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    inset 0 -24px 48px -30px rgba(212, 177, 95, 0.3);
+}
+.idcard:hover::after { transform: translateX(130%); }
+
+@keyframes idcard-flow {
+  0%, 100% { background-position: 0% 0%, 0% 0%, 100% 100%; }
+  50%      { background-position: 100% 100%, 100% 60%, 0% 20%; }
+}
+.idcard__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-size: 9px;
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--glass-border);
+}
+.idcard__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--emerald);
+  border: 1px solid rgba(46, 230, 168, 0.35);
+  border-radius: 999px;
+  padding: 3px 8px;
+}
+.idcard__photo {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  margin-bottom: 14px;
+  background:
+    radial-gradient(120px 120px at 30% 20%, rgba(46, 230, 168, 0.12), transparent 70%),
+    radial-gradient(160px 160px at 75% 85%, rgba(212, 177, 95, 0.10), transparent 70%),
+    var(--ink);
+}
+.idcard__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.idcard__monogram {
+  display: none;
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 144;
+  font-weight: 520;
+  font-size: 3.4rem;
+  letter-spacing: 0.04em;
+  color: var(--gold);
+}
+.idcard.no-photo .idcard__photo img { display: none; }
+.idcard.no-photo .idcard__monogram { display: flex; }
+.idcard__name {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 60;
+  font-weight: 500;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+.idcard__meta {
+  font-size: 9.5px;
+  line-height: 1.9;
+}
+
+@media (max-width: 1100px) {
+  .hero {
+    grid-template-columns: 1fr;
+    justify-items: start;
+    gap: clamp(28px, 6vw, 48px);
+  }
+  .idcard {
+    justify-self: start;
+    width: clamp(240px, 60vw, 280px);
+    transform: rotate(-2deg);
+  }
+  .idcard:hover { transform: rotate(0deg) translateY(-6px); }
+}
+
+.hero__hint {
+  position: absolute;
+  right: clamp(20px, 5vw, 64px);
+  bottom: 28px;
+  z-index: 2;
+  font-size: 10px;
+  color: var(--text-2);
+  opacity: 0.85;
+}
+
+/* Intro choreography (JS adds .hero-ready to <html> when fonts resolve) */
+.js .hero [data-intro] {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s var(--ease-out);
+}
+.js .hero__name { opacity: 0; }
+.js.hero-ready .hero__name { opacity: 1; }
+.js.hero-ready .hero [data-intro] { opacity: 1; transform: none; }
+.js.hero-ready .hero [data-intro="1"] { transition-delay: 0.05s; }
+.js.hero-ready .hero [data-intro="2"] { transition-delay: 0.9s; }
+.js.hero-ready .hero [data-intro="3"] { transition-delay: 1.1s; }
+.js.hero-ready .hero [data-intro="4"] { transition-delay: 1.6s; }
+/* extra specificity so the generic [data-intro] opacity:1 rule can't win */
+.js.hero-ready .hero .hero__hint[data-intro] { opacity: 0.85; }
+
+/* Chart tooltip */
+.hero__tooltip {
+  position: absolute;
+  top: 0; left: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 11px;
+  color: var(--text);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  will-change: transform;
+}
+.hero__tooltip.visible { opacity: 1; }
+.hero__tooltip-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex: none;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 26px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  overflow: hidden;
+  background-color: transparent;
+  /* specular sweep */
+  background-image: linear-gradient(105deg, transparent 40%, rgba(237, 241, 244, 0.12) 50%, transparent 60%);
+  background-size: 250% 100%;
+  background-position: 120% 0;
+  background-repeat: no-repeat;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, color 0.25s ease, background-position 0.6s ease-out, transform 0.4s var(--ease-spring);
+}
+.btn:hover, .btn:focus-visible { background-position: -120% 0; }
+
+.btn--gold {
+  color: var(--gold);
+  border: 1px solid var(--gold-dim);
+}
+.btn--gold:hover, .btn--gold:focus-visible {
+  border-color: var(--gold);
+  box-shadow: 0 0 24px rgba(212, 177, 95, 0.2);
+}
+.btn--gold.copied {
+  color: var(--emerald);
+  border-color: var(--emerald);
+  animation: confirm-pulse 0.9s ease-out 1;
+}
+@keyframes confirm-pulse {
+  0% { box-shadow: 0 0 0 rgba(46, 230, 168, 0); }
+  30% { box-shadow: 0 0 28px rgba(46, 230, 168, 0.35); }
+  100% { box-shadow: 0 0 0 rgba(46, 230, 168, 0); }
+}
+
+.btn--ghost {
+  color: var(--text);
+  border: 1px solid var(--glass-border);
+}
+.btn--ghost:hover, .btn--ghost:focus-visible {
+  border-color: var(--emerald);
+  color: var(--emerald);
+  box-shadow: 0 0 24px var(--emerald-glow);
+}
+
+.btn__arrow { transition: transform 0.3s var(--ease-out); }
+.btn:hover .btn__arrow { transform: translateY(3px); }
+
+.magnetic { will-change: transform; }
+
+/* ============================================================
+   STATS STRIP
+   ============================================================ */
+.stats {
+  border-top: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--glass-border);
+  background: rgba(11, 15, 20, 0.5);
+}
+.stats__inner {
+  max-width: var(--section-max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 0 clamp(20px, 4vw, 48px);
+}
+.stat {
+  padding: 34px 12px;
+  text-align: center;
+  border-left: 1px solid var(--glass-border);
+}
+.stat:first-child { border-left: none; }
+.stat__value {
+  display: block;
+  font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.stat__suffix { color: var(--emerald); }
+.stat__label { font-size: 10px; }
+
+/* Odometer */
+.odo { display: inline-flex; overflow: hidden; height: 1em; line-height: 1; }
+.odo__col { display: inline-block; }
+.odo__strip {
+  display: flex;
+  flex-direction: column;
+  transform: translateY(0);
+  transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.odo__strip span { display: block; height: 1em; line-height: 1; }
+
+/* ============================================================
+   SECTIONS
+   ============================================================ */
+.section {
+  max-width: var(--section-max);
+  margin: 0 auto;
+  padding: clamp(90px, 12vh, 150px) clamp(20px, 4vw, 48px) 0;
+}
+.section--full { max-width: none; padding-left: 0; padding-right: 0; }
+.sec-inset {
+  max-width: var(--section-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(20px, 4vw, 48px);
+  padding-right: clamp(20px, 4vw, 48px);
+}
+.sec-head--inset {
+  max-width: var(--section-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(20px, 4vw, 48px);
+  padding-right: clamp(20px, 4vw, 48px);
+}
+
+.sec-head { margin-bottom: clamp(40px, 6vh, 64px); }
+.sec-head__rule {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: var(--gold-dim);
+  transform: scaleX(0);
+  transform-origin: left;
+  margin-bottom: 20px;
+}
+.sec-head__index { color: var(--gold); margin-bottom: 12px; }
+.sec-head__title {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 144;
+  font-weight: 480;
+  font-size: clamp(1.7rem, 4vw, 2.7rem);
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+}
+
+.js .sec-head__rule,
+.js .sec-head__index,
+.js .sec-head__title { opacity: 0; }
+.js .sec-head.in-view .sec-head__rule {
+  opacity: 1;
+  animation: rule-draw 0.6s ease-out forwards;
+}
+.js .sec-head.in-view .sec-head__index {
+  animation: head-fade 0.4s var(--ease-out) 0.08s forwards;
+}
+.js .sec-head.in-view .sec-head__title {
+  animation: head-fade 0.4s var(--ease-out) 0.16s forwards;
+}
+@keyframes rule-draw { to { transform: scaleX(1); } }
+@keyframes head-fade {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Reveal system */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(38px) scale(0.98);
+  filter: blur(7px);
+  will-change: transform, opacity, filter;
+}
+/* directional entrances — holdings cards drift in from alternating sides.
+   Direction lives in --rx so the (equal-specificity, later) .revealed rule
+   can still reset transform to none. */
+.js .holdings [data-reveal] { transform: translateY(38px) translateX(var(--rx, 0px)) scale(0.98); }
+.js .holdings [data-reveal]:nth-of-type(odd)  { --rx: -34px; }
+.js .holdings [data-reveal]:nth-of-type(even) { --rx: 34px; }
+
+/* Failsafe: if js/main.js never wires the observers (404, CSP, crash),
+   the inline head script adds .reveal-fallback after 3s so content
+   is never trapped at opacity 0 */
+.js.reveal-fallback [data-reveal],
+.js.reveal-fallback .entry__points li,
+.js.reveal-fallback .sec-head__rule,
+.js.reveal-fallback .sec-head__index,
+.js.reveal-fallback .sec-head__title,
+.js.reveal-fallback .hero__name,
+.js.reveal-fallback .hero [data-intro] {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
+.js.reveal-fallback .card__fig .fig-text { opacity: 1; }
+.js.reveal-fallback [data-parallax] { transform: none !important; }
+.js [data-reveal].revealed {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  /* keep border-color transitionable so .entry/.cred hover fades survive */
+  transition: opacity 0.7s var(--ease-out), transform 0.75s var(--ease-out), filter 0.7s var(--ease-out), border-color 0.3s ease;
+  transition-delay: var(--d, 0s), var(--d, 0s), var(--d, 0s), 0s;
+}
+/* once settled, drop will-change so we don't pin layers forever */
+.js [data-reveal].settled { will-change: auto; }
+
+/* staggered ledger bullets — cascade in just after their entry card lands */
+.js .entry[data-reveal] .entry__points li {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+}
+.js .entry[data-reveal].revealed .entry__points li { opacity: 1; transform: none; }
+.js .entry[data-reveal].revealed .entry__points li:nth-child(1) { transition-delay: 0.28s; }
+.js .entry[data-reveal].revealed .entry__points li:nth-child(2) { transition-delay: 0.40s; }
+.js .entry[data-reveal].revealed .entry__points li:nth-child(3) { transition-delay: 0.52s; }
+
+/* ============================================================
+   01 / TRANSACTION HISTORY — the ledger
+   ============================================================ */
+.ledger {
+  position: relative;
+  max-width: 880px;
+  padding-left: 34px;
+}
+.ledger__rail {
+  position: absolute;
+  left: 8px;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: var(--glass-border);
+}
+.ledger__rail span {
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  transform: scaleY(0);
+  transform-origin: top;
+  will-change: transform;
+}
+
+.entry {
+  position: relative;
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 12px 28px;
+  padding: 30px 32px;
+  margin-bottom: 22px;
+  transition: border-color 0.3s ease;
+}
+.entry:hover { border-color: rgba(212, 177, 95, 0.25); }
+
+.entry__node {
+  position: absolute;
+  left: -30px;
+  top: 42px;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--gold);
+}
+.js [data-reveal].revealed .entry__node { animation: node-ring 0.9s var(--ease-out) 0.2s 1; }
+@keyframes node-ring {
+  0% { box-shadow: 0 0 0 0 rgba(212, 177, 95, 0.45); }
+  100% { box-shadow: 0 0 0 14px rgba(212, 177, 95, 0); }
+}
+.entry__node--live { background: var(--emerald); border-color: var(--emerald); }
+
+.entry__date { color: var(--text-2); margin-bottom: 10px; }
+.entry__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px;
+  color: var(--text-2);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  padding: 4px 10px;
+  width: fit-content;
+}
+.entry__tag--live { color: var(--emerald); border-color: rgba(46, 230, 168, 0.35); }
+.entry__tag--up { color: var(--emerald); border-color: rgba(46, 230, 168, 0.35); }
+
+.live-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--emerald);
+  box-shadow: 0 0 8px var(--emerald);
+  animation: live-pulse 2s ease-in-out infinite;
+}
+@keyframes live-pulse { 50% { opacity: 0.35; } }
+
+.entry__role {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 60;
+  font-weight: 480;
+  font-size: 1.5rem;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+.entry__org { font-size: 11px; margin-bottom: 16px; }
+.entry__points { list-style: none; }
+.entry__points li {
+  position: relative;
+  padding-left: 22px;
+  margin-bottom: 10px;
+  color: var(--text-2);
+  font-size: 15.5px;
+  max-width: 68ch;
+}
+.entry__points li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-size: 12px;
+  top: 3px;
+}
+.entry__points strong { color: var(--text); font-weight: 500; }
+
+/* ============================================================
+   02 / HOLDINGS — project cards
+   ============================================================ */
+.holdings {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+.card {
+  position: relative;
+  padding: 30px 32px 84px;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.card--flagship { grid-column: 1 / -1; }
+
+/* champagne border-beam: gradient ring masked to the 1px border */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(180px circle at var(--mx, 50%) var(--my, 50%), rgba(212, 177, 95, 0.5), transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.card:hover::before, .card:focus-within::before { opacity: 1; }
+.perf-lite .card::before { display: none; }
+
+.card__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 10.5px;
+  margin-bottom: 20px;
+}
+.card__tickers { color: var(--gold); }
+
+.card__name {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 90;
+  font-weight: 500;
+  font-size: clamp(1.35rem, 2.4vw, 1.8rem);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin-bottom: 14px;
+  max-width: 30ch;
+}
+.card--flagship .card__name { max-width: 44ch; }
+
+.card__thesis {
+  color: var(--text-2);
+  font-size: 15.5px;
+  max-width: 68ch;
+  margin-bottom: 18px;
+}
+
+.card__scale {
+  font-size: 10.5px;
+  color: var(--emerald);
+  margin-bottom: 18px;
+}
+
+.card__fig { margin: 8px 0 4px; max-width: 620px; }
+.card__fig svg { width: 100%; height: auto; display: block; }
+.fig-boxes rect { stroke: rgba(255, 255, 255, 0.28); }
+.fig-boxes .draw--em { stroke: rgba(46, 230, 168, 0.55); }
+.fig-flows path { stroke: rgba(212, 177, 95, 0.45); }
+.fig-text text {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.06em;
+  fill: var(--text-2);
+}
+.card__fig figcaption {
+  margin-top: 10px;
+  font-size: 9.5px;
+  color: var(--text-2);
+  opacity: 0.8;
+}
+/* self-drawing strokes — JS measures real path lengths and sets
+   dasharray/dashoffset inline; this only runs the release animation */
+.js .fig-drawn .draw {
+  animation: fig-draw 1.1s var(--ease-out) forwards;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+@keyframes fig-draw { to { stroke-dashoffset: 0; } }
+.js .card__fig .fig-text { opacity: 0; transition: opacity 0.5s ease 0.9s; }
+.js .card__fig.fig-drawn .fig-text { opacity: 1; }
+
+.card__spark {
+  position: absolute;
+  right: 28px;
+  bottom: 24px;
+  width: 220px;
+  height: 48px;
+  opacity: 0.9;
+}
+
+/* ============================================================
+   03 / CAPABILITIES
+   ============================================================ */
+.ticker {
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 16px 56px 16px 0;
+  margin-bottom: clamp(48px, 7vh, 72px);
+  background: rgba(11, 15, 20, 0.5);
+}
+.ticker__toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 5px 9px;
+  font-size: 9px;
+  color: var(--text-2);
+  background: var(--ink);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.ticker__toggle:hover, .ticker__toggle:focus-visible {
+  color: var(--emerald);
+  border-color: rgba(46, 230, 168, 0.35);
+}
+.ticker.is-paused .ticker__track,
+.ticker:focus-within .ticker__track { animation-play-state: paused; }
+.ticker__track {
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  font-size: 13px;
+  animation: ticker-roll 40s linear infinite;
+}
+.ticker:hover .ticker__track { animation-play-state: paused; }
+.ticker__group i { font-style: normal; color: var(--emerald); }
+@keyframes ticker-roll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.skills {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+.skills__col { padding: 26px 24px; }
+.skills__head {
+  color: var(--gold);
+  font-size: 11px;
+  padding-bottom: 14px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--glass-border);
+}
+.skills__list { list-style: none; }
+
+.skill {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: var(--text-2);
+  font-size: 12px;
+  text-transform: none;
+  letter-spacing: 0.04em;
+  transition: color 0.2s ease, opacity 0.25s ease, transform 0.2s ease;
+}
+.skill span { color: var(--text-2); font-size: 10px; letter-spacing: 0.08em; flex: none; }
+.skill__dots {
+  flex: 1;
+  min-width: 20px;
+  border-bottom: 1px dotted rgba(147, 160, 180, 0.35);
+  transform: translateY(-3px);
+}
+
+/* dependency-trace states (JS adds .skill-tracing to the section).
+   Dim floor stays ≥4.5:1 contrast for the 12px labels (WCAG 1.4.3) */
+.skill-tracing .skill { opacity: 0.8; }
+.skill-tracing .skill.is-origin,
+.skill-tracing .skill.is-linked { opacity: 1; }
+.skill.is-origin { color: var(--emerald); transform: translateX(2px); }
+.skill.is-origin span { color: var(--emerald); }
+.skill.is-linked { color: var(--text); }
+.skill.is-linked .skill__dots { border-bottom-color: var(--gold-dim); }
+.skill:hover { color: var(--emerald); }
+
+.skills__note {
+  margin-top: 26px;
+  font-size: 10px;
+  opacity: 0.85;
+}
+
+/* ============================================================
+   04 / CREDENTIALS
+   ============================================================ */
+.creds { display: grid; gap: 18px; max-width: 880px; }
+.cred {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 8px 28px;
+  padding: 26px 32px;
+  transition: border-color 0.3s ease;
+}
+.cred:hover { border-color: rgba(212, 177, 95, 0.25); }
+.cred__date { color: var(--text-2); padding-top: 4px; }
+.cred__degree {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 60;
+  font-weight: 480;
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+.cred__school { font-size: 10.5px; }
+
+/* ============================================================
+   05 / OPEN A POSITION
+   ============================================================ */
+.section--contact { padding-bottom: clamp(90px, 12vh, 150px); }
+
+.contact__headline {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 144;
+  font-weight: 480;
+  font-size: clamp(2.4rem, 6.5vw, 4.8rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin-bottom: clamp(36px, 6vh, 56px);
+}
+.contact__headline em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.contact__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 22px 28px;
+  margin-bottom: 22px;
+  max-width: 720px;
+}
+.contact__email {
+  font-size: clamp(13px, 2.4vw, 16px);
+  color: var(--text);
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+  word-break: break-all;
+}
+
+.contact__pills { display: flex; gap: 14px; flex-wrap: wrap; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  border-top: 1px solid var(--glass-border);
+  padding: 34px clamp(20px, 4vw, 48px);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: var(--ink);
+}
+.footer p { font-size: 10px; }
+.footer__fine { opacity: 0.85; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+  .skills { grid-template-columns: 1fr; }
+  .holdings { grid-template-columns: 1fr; }
+  .card { padding-bottom: 84px; }
+}
+
+@media (max-width: 760px) {
+  .nav__links { display: none; }
+  .stats__inner { grid-template-columns: repeat(2, 1fr); }
+  .stat:nth-child(3) { border-left: none; }
+  .stat { border-top: 1px solid var(--glass-border); }
+  .stat:nth-child(-n+2) { border-top: none; }
+  .entry, .cred { grid-template-columns: 1fr; }
+  .entry__meta { display: flex; align-items: center; gap: 14px; }
+  .entry__date { margin-bottom: 0; }
+  .ledger { padding-left: 24px; }
+  .ledger__rail { left: 4px; }
+  .entry__node { left: -24px; top: 34px; }
+  .card__spark { width: 160px; }
+  .hero__hint { display: none; }
+  .hero__tooltip {
+    max-width: calc(100vw - 32px);
+    white-space: normal;
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 460px) {
+  .contact__row { flex-direction: column; align-items: flex-start; }
+}
+
+/* ============================================================
+   REDUCED MOTION — everything lands, nothing moves
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001s !important;
+  }
+  .ticker__track {
+    animation: none;
+    width: auto;
+    white-space: normal;
+  }
+  .ticker__group:last-child { display: none; }
+  .ticker__toggle { display: none; }
+  .ticker { padding-right: 0; }
+  .js [data-reveal] { opacity: 1; transform: none; filter: none; }
+  .js .entry__points li { opacity: 1; transform: none; }
+  .js [data-parallax] { transform: none !important; }
+  .js .sec-head__rule { opacity: 1; transform: scaleX(1); }
+  .js .sec-head__index, .js .sec-head__title { opacity: 1; }
+  .js .hero__name, .js .hero [data-intro] { opacity: 1; transform: none; }
+  .js .idcard { opacity: 1; }
+  .idcard { animation: none; }
+  .js .draw { stroke-dashoffset: 0; }
+  .js .card__fig .fig-text { opacity: 1; }
+  .live-dot { animation: none; }
+}
+
+/* ============================================================
+   PRINT — the ledger prints as a clean statement
+   ============================================================ */
+@media print {
+  :root {
+    --bg: #ffffff;
+    --ink: #ffffff;
+    --glass: transparent;
+    --glass-border: #d8d8d8;
+    --text: #111111;
+    --text-2: #444444;
+    --gold: #8a6d1f;
+    --emerald: #0a7d55;
+  }
+  body { background: #fff; color: #111; font-size: 12px; }
+  .nav, .hero__ctas, .hero__hint, .hero__tooltip, #career-chart,
+  .ticker, .card__spark, .contact__pills, .skills__note, #copy-email { display: none !important; }
+  .hero { min-height: auto; padding: 24px 0 0; }
+  .glass { background: transparent; border: 1px solid #ddd; backdrop-filter: none; }
+  .section { padding: 24px 0 0; max-width: none; }
+  .sec-inset, .sec-head--inset { padding-left: 0; padding-right: 0; max-width: none; }
+  .odo__strip { transition: none !important; }
+  .js [data-reveal], .js .sec-head__rule, .js .sec-head__index, .js .sec-head__title,
+  .js .hero__name, .js .hero [data-intro] { opacity: 1 !important; transform: none !important; }
+  .js .draw { stroke-dashoffset: 0; }
+  .js .card__fig .fig-text { opacity: 1; }
+  .entry, .cred, .card { break-inside: avoid; }
+  .contact__email::after { content: " · +971 52 946 4769"; }
+}

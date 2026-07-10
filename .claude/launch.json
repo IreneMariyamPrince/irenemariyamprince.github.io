@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "portfolio",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["/private/tmp/claude-501/-Users-nobin-Desktop-Irene-port/ee011075-6b75-40ef-9484-1e8c5652d82c/scratchpad/serve.py"],
+      "port": 4173
+    }
+  ]
+}
